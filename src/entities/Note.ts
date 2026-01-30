@@ -1,3 +1,5 @@
+import { GAME_CONFIG } from "../core/constants";
+
 export class Note {
   public x: number;
   public y: number;
@@ -24,6 +26,6 @@ export class Note {
     ctx.fillStyle = this.color;
     ctx.textAlign = 'center';
     
-    ctx.fillText(this.char, this.x, this.y);
+    ctx.fillText(this.char, (this.x + (GAME_CONFIG.KEY_SPACING / 2)), this.y);
   }
 }

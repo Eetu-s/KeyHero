@@ -16,7 +16,7 @@ export const GAME_CONFIG = {
 
   SPAWN_INTERVAL: 1000,   // Milliseconds between spawns
   BASE_SPEED: 0.2,   // Pixels per millisecond
-  SPAWN_Y: -30,              
+  SPAWN_Y: -90,              
   
   // Valid Characters
   WORD_LIST: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
