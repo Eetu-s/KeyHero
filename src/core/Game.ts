@@ -74,18 +74,38 @@ export class Game {
 
 private spawnNote(): void {
 
-    const padding = GAME_CONFIG.PADDING;
-    const x = Math.random() * (this.canvas.width - padding * 2) + padding;
-    
-    const y = GAME_CONFIG.SPAWN_Y; 
-    
     // Random character
     const chars = GAME_CONFIG.WORD_LIST;
     const char = chars.charAt(Math.floor(Math.random() * chars.length));
+
+    //const padding = GAME_CONFIG.PADDING;
+    const x = this.getQWERTYPosition(char, this.canvas.width);
+    
+    const y = GAME_CONFIG.SPAWN_Y; 
+    
+
     
     // Speed: 0.2 pixels per ms
     this.notes.push(new Note(x, y, char, GAME_CONFIG.BASE_SPEED)); 
   }
+
+private getQWERTYPosition(char: string, canvasWidth: number): number {
+
+    const qwertyLine = 'QWERTYUIOPASDFGHJKLZXCVBNM';
+    const indexOfLine2Start = 10;
+    const indexOfLine3Start = 19;
+
+    const keyWidth = 80; 
+    const startX = GAME_CONFIG.PADDING 
+
+    let index = qwertyLine.indexOf(char);
+
+    if (index < 0) return -100; // Not found move this off-screen
+    if (index < indexOfLine2Start) { return startX + index * keyWidth }
+    else if (index < indexOfLine3Start) { return startX + ((index - indexOfLine2Start) * keyWidth) + 20; }
+    else { return startX + ((index - indexOfLine3Start) * keyWidth) + 40; }
+  }
+
 
 
   private handleInput(event: KeyboardEvent): void {
