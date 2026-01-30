@@ -1,7 +1,15 @@
+import { Note } from '../entities/Note';
+import { GAME_CONFIG } from './constants';
+
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private lastTime: number = 0;
+
+  // Game State
+  private notes: Note[] = []; 
+  private spawnTimer: number = 0;
+  private spawnInterval: number = GAME_CONFIG.SPAWN_INTERVAL; 
 
   constructor(canvasId: string) {
 
@@ -40,15 +48,41 @@ export class Game {
 
 
   private update(deltaTime: number): void {
-    // Logic will go here later
+    this.spawnTimer += deltaTime;
+    //spawn new note if time exceeded
+    if (this.spawnTimer > this.spawnInterval) {
+      this.spawnTimer = 0;
+      //random x position and character
+        this.spawnNote();
+    }
+
+    //update notes and remove off-screen ones
+    this.notes.forEach((note) => note.update(deltaTime));
+    this.notes = this.notes.filter((note) => note.y <= this.canvas.height);
   }
 
 
   private draw(): void {
 
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.fillStyle = '#4488ff';
-    this.ctx.fillRect(100, 100, 50, 50);
+    this.notes.forEach((note) => note.draw(this.ctx));
+  }
+
+
+private spawnNote(): void {
+    //p
+    const padding = GAME_CONFIG.PADDING;
+    const x = Math.random() * (this.canvas.width - padding * 2) + padding;
+    
+    const y = GAME_CONFIG.SPAWN_Y; 
+    
+    // Random character (A-Z) logic
+    const chars = GAME_CONFIG.WORD_LIST;
+    const char = chars.charAt(Math.floor(Math.random() * chars.length));
+    
+    // Speed: 0.2 pixels per ms
+    this.notes.push(new Note(x, y, char, GAME_CONFIG.BASE_SPEED)); 
   }
 }
