@@ -5,7 +5,7 @@ export class Note {
   public isActive: boolean = true; 
 
   private speed: number;
-  private color: string = '#e41818';
+  private color: string = '#ffffff';
 
   constructor(x: number, y: number, char: string, speed: number) {
     this.x = x;

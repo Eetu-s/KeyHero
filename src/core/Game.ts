@@ -91,19 +91,18 @@ private spawnNote(): void {
 
 private getQWERTYPosition(char: string, canvasWidth: number): number {
 
-    const qwertyLine = 'QWERTYUIOPASDFGHJKLZXCVBNM';
-    const indexOfLine2Start = 10;
-    const indexOfLine3Start = 19;
+    const indexOfLine2Start = GAME_CONFIG.INDEX_OF_LINE2_START;
+    const indexOfLine3Start = GAME_CONFIG.INDEX_OF_LINE3_START;
 
-    const keyWidth = 80; 
+    const keyWidth = GAME_CONFIG.KEY_SPACING; 
     const startX = GAME_CONFIG.PADDING 
 
-    let index = qwertyLine.indexOf(char);
+    let index = GAME_CONFIG.QWERTY_LAYOUT.indexOf(char);
 
     if (index < 0) return -100; // Not found move this off-screen
     if (index < indexOfLine2Start) { return startX + index * keyWidth }
-    else if (index < indexOfLine3Start) { return startX + ((index - indexOfLine2Start) * keyWidth) + 20; }
-    else { return startX + ((index - indexOfLine3Start) * keyWidth) + 40; }
+    else if (index < indexOfLine3Start) { return startX + ((index - indexOfLine2Start) * keyWidth) + GAME_CONFIG.LINE_2_OFFSET; }
+    else { return startX + ((index - indexOfLine3Start) * keyWidth) + GAME_CONFIG.LINE_3_OFFSET; }
   }
 
 
