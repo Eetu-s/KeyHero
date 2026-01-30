@@ -4,7 +4,7 @@ import { GAME_CONFIG } from './constants';
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private lastTime: number = 0;
+  private lastTime: number = GAME_CONFIG.SPAWN_INTERVAL;
 
   // Game State
   private notes: Note[] = []; 
@@ -25,6 +25,7 @@ export class Game {
     this.resize();
     window.addEventListener('resize', () => this.resize());
 
+    window.addEventListener('keydown', (e) => this.handleInput(e));
 
     requestAnimationFrame((timestamp) => this.loop(timestamp));
   }
@@ -72,17 +73,34 @@ export class Game {
 
 
 private spawnNote(): void {
-    //p
+
     const padding = GAME_CONFIG.PADDING;
     const x = Math.random() * (this.canvas.width - padding * 2) + padding;
     
     const y = GAME_CONFIG.SPAWN_Y; 
     
-    // Random character (A-Z) logic
+    // Random character
     const chars = GAME_CONFIG.WORD_LIST;
     const char = chars.charAt(Math.floor(Math.random() * chars.length));
     
     // Speed: 0.2 pixels per ms
     this.notes.push(new Note(x, y, char, GAME_CONFIG.BASE_SPEED)); 
+  }
+
+
+  private handleInput(event: KeyboardEvent): void {
+    
+    const key = event.key.toUpperCase();
+
+    //remove the first note that matches the key  (as all have constant speed for now this is sufficient)
+    const index = this.notes.findIndex(note => note.char === key);
+
+    if (index !== -1) {
+      this.notes.splice(index, 1);
+      console.log(`Hit: ${key}!`);
+    } else {
+      // maybe add some punishment for wrong key?
+      console.log(`Miss: ${key}`);
+    }
   }
 }
