@@ -15,7 +15,7 @@ export const GAME_CONFIG = {
   LINE_2_OFFSET: 20,
   LINE_3_OFFSET: 40,
 
-  SPAWN_INTERVAL: 1000,   // Milliseconds between spawns
+  SPAWN_INTERVAL: 500,   // Milliseconds between spawns
   BASE_SPEED: 0.2,   // Pixels per millisecond
   SPAWN_Y: -90,              
 

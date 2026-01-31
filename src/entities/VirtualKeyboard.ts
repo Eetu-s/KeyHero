@@ -3,7 +3,10 @@ import { GAME_CONFIG } from '../core/constants.js';
 export class VirtualKeyboard {
   private canvasWidth: number;
   private canvasHeight: number;
+
   private keyMap: Map<string, number> = new Map(); // Stores X position for each char
+
+  private activeKeys: Set<string> = new Set();
 
  constructor(width: number, height: number) {
     this.canvasWidth = width;
@@ -18,6 +21,14 @@ export class VirtualKeyboard {
       const xPos = this.getQWERTYXPosition(char, this.canvasWidth);
       this.keyMap.set(char, xPos);
     }
+  }
+
+  public highlightKey(char: string): void {
+    this.activeKeys.add(char);
+
+    setTimeout(() => {
+      this.activeKeys.delete(char);
+    }, 150);
   }
 
   public getQWERTYXPosition(char: string, canvasWidth: number): number {
@@ -54,9 +65,16 @@ this.keyMap.forEach((x, char) => {
       
       const y = startY + (row * GAME_CONFIG.KEY_SPACING);
       
-      ctx.strokeStyle = '#444'; 
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, keySize, keySize);
+      const isActive = this.activeKeys.has(char);
+
+      if (isActive) {
+        ctx.fillStyle = '#243f4d'; 
+        ctx.fillRect(x, y, keySize, keySize);
+        ctx.strokeStyle = '#ffffff'; 
+      } else {
+        ctx.strokeStyle = '#444'; 
+        ctx.strokeRect(x, y, keySize, keySize);
+      }
 
       ctx.fillStyle = '#666';
       ctx.font = 'bold 24px monospace';

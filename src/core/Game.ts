@@ -90,7 +90,7 @@ private spawnNote(): void {
         const randomInt = Math.floor(Math.random() * 10);
         if(randomInt === 0){
           this.activateSecret = true;
-          console.log("Secret sequence activated!");
+          console.log("Secret sequence activated");
         }
     } else {
         // spawn next char in secret sequence
@@ -99,7 +99,7 @@ private spawnNote(): void {
         if(this.secretIndex >= GAME_CONFIG.SECRET_LIST.length){
           this.secretIndex = 0;
           this.activateSecret = false;
-          console.log("Secret sequence completed!");
+          console.log("Secret sequence completed");
         }
     }
 
@@ -124,6 +124,8 @@ private spawnNote(): void {
   private handleInput(event: KeyboardEvent): void {
     
     const key = event.key.toUpperCase();
+
+    this.virtualKeyboard.highlightKey(key);
 
     //remove the first note that matches the key  (as all have constant speed for now this is sufficient)
     const index = this.notes.findIndex(note => note.char === key);
