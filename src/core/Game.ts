@@ -125,18 +125,22 @@ private spawnNote(): void {
     
     const key = event.key.toUpperCase();
 
-    this.virtualKeyboard.highlightKey(key);
-
+    
     //remove the first note that matches the key  (as all have constant speed for now this is sufficient)
     const index = this.notes.findIndex(note => note.char === key);
 
     if (index !== -1) {
-      if (this.virtualKeyboard.checkYWithinKey(this.notes[index].y, key))
-      this.notes.splice(index, 1);
-      console.log(`Hit: ${key}!`);
-    } else {
+      if (this.virtualKeyboard.checkYWithinKey(this.notes[index].y, key)) {
+        this.notes.splice(index, 1);
+        this.virtualKeyboard.highlightKey(key, true);
+        console.log(`Hit: ${key}!`);
+      } else {
       // maybe add some punishment for wrong key?
       console.log(`Miss: ${key}`);
+      this.virtualKeyboard.highlightKey(key, false);
+      }
+    } else {
+      this.virtualKeyboard.highlightKey(key, false);
     }
   }
 }

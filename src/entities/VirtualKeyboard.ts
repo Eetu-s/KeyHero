@@ -7,6 +7,7 @@ export class VirtualKeyboard {
   private keyMap: Map<string, number> = new Map(); // Stores X position for each char
 
   private activeKeys: Set<string> = new Set();
+  private hitKeys: Set<string> = new Set();
 
  constructor(width: number, height: number) {
     this.canvasWidth = width;
@@ -23,12 +24,17 @@ export class VirtualKeyboard {
     }
   }
 
-  public highlightKey(char: string): void {
-    this.activeKeys.add(char);
-
+  public highlightKey(char: string, hit: boolean): void {
+    if (hit) {
+      this.hitKeys.add(char);
+    } else {
+      this.activeKeys.add(char);
+    }
     setTimeout(() => {
       this.activeKeys.delete(char);
+      this.hitKeys.delete(char);
     }, 150);
+  
   }
 
   public getQWERTYXPosition(char: string, canvasWidth: number): number {
@@ -66,8 +72,13 @@ this.keyMap.forEach((x, char) => {
       const y = startY + (row * GAME_CONFIG.KEY_SPACING);
       
       const isActive = this.activeKeys.has(char);
+      const isHit = this.hitKeys.has(char);
 
-      if (isActive) {
+      if (isHit) {
+        ctx.fillStyle = '#368039'; // Green for hit keys
+        ctx.fillRect(x, y, keySize, keySize);
+        ctx.strokeStyle = '#ffffff'; 
+      } else if (isActive) {
         ctx.fillStyle = '#243f4d'; 
         ctx.fillRect(x, y, keySize, keySize);
         ctx.strokeStyle = '#ffffff'; 
