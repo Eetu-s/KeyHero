@@ -39,7 +39,7 @@ export class VirtualKeyboard {
 public draw(ctx: CanvasRenderingContext2D): void {
 
     const keySize = GAME_CONFIG.KEY_SPACING ; 
-    const startY = this.canvasHeight - 250; 
+    const startY = this.canvasHeight - GAME_CONFIG.KEY_BOARD_Y_OFFSET; 
 
 this.keyMap.forEach((x, char) => {
       
@@ -66,4 +66,24 @@ this.keyMap.forEach((x, char) => {
       ctx.fillText(char, x + (keySize / 2), y + (keySize / 2));
     });
   }
+
+  public checkYWithinKey(y: number, key: string): boolean {
+
+      const index = GAME_CONFIG.QWERTY_LAYOUT.indexOf(key);
+      let row = 0;
+      if (index >= GAME_CONFIG.INDEX_OF_LINE3_START) {
+        row = 2; 
+      } else if (index >= GAME_CONFIG.INDEX_OF_LINE2_START) {
+        row = 1; 
+      }
+      
+
+    const startY = this.canvasHeight - GAME_CONFIG.KEY_BOARD_Y_OFFSET; 
+    const keyTop = startY + (row * GAME_CONFIG.KEY_SPACING);
+    const keyBottom = keyTop + GAME_CONFIG.KEY_SPACING;
+
+    return y >= keyTop && y <= keyBottom;
+  }
+
+
 }

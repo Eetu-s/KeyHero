@@ -106,6 +106,7 @@ private spawnNote(): void {
     const index = this.notes.findIndex(note => note.char === key);
 
     if (index !== -1) {
+      if (this.virtualKeyboard.checkYWithinKey(this.notes[index].y, key))
       this.notes.splice(index, 1);
       console.log(`Hit: ${key}!`);
     } else {

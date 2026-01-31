@@ -8,7 +8,8 @@ export const GAME_CONFIG = {
 
   // QWERTY Keyboard Layout
   QWERTY_LAYOUT: 'QWERTYUIOPASDFGHJKLZXCVBNM',
-  KEY_SPACING: 80, // Space between keys in pixels
+  KEY_SPACING: 100, // Space between keys in pixels
+  KEY_BOARD_Y_OFFSET: 350, // Distance from bottom of canvas to keyboard
   INDEX_OF_LINE2_START: 10,
   INDEX_OF_LINE3_START: 19,
   LINE_2_OFFSET: 20,
@@ -17,7 +18,6 @@ export const GAME_CONFIG = {
   SPAWN_INTERVAL: 1000,   // Milliseconds between spawns
   BASE_SPEED: 0.2,   // Pixels per millisecond
   SPAWN_Y: -90,              
-  
-  // Valid Characters
+
   WORD_LIST: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 };
