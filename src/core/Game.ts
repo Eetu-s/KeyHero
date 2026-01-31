@@ -11,7 +11,9 @@ export class Game {
   // Game State
   private notes: Note[] = []; 
   private spawnTimer: number = 0;
-  private spawnInterval: number = GAME_CONFIG.SPAWN_INTERVAL; 
+  private spawnInterval: number = GAME_CONFIG.SPAWN_INTERVAL;
+  private activateSecret: boolean = false;
+  private secretIndex: number = 0;
   
 
   constructor(canvasId: string) {
@@ -56,9 +58,9 @@ export class Game {
     //spawn new note if time exceeded
     if (this.spawnTimer > this.spawnInterval) {
       this.spawnTimer = 0;
-        this.spawnNote();
+      this.spawnNote();
     }
-
+    
     //update notes and remove off-screen ones
     this.notes.forEach((note) => note.update(deltaTime));
     this.notes = this.notes.filter((note) => note.y <= this.canvas.height);
@@ -78,9 +80,30 @@ export class Game {
 
 private spawnNote(): void {
 
-    // Random character
+
+    // get random character
     const chars = GAME_CONFIG.WORD_LIST;
-    const char = chars.charAt(Math.floor(Math.random() * chars.length));
+    let char = chars.charAt(Math.floor(Math.random() * chars.length));
+
+    if(!this.activateSecret){
+        // one in 10 chance to activate secret sequence
+        const randomInt = Math.floor(Math.random() * 10);
+        if(randomInt === 0){
+          this.activateSecret = true;
+          console.log("Secret sequence activated!");
+        }
+    } else {
+        // spawn next char in secret sequence
+        char = GAME_CONFIG.SECRET_LIST.charAt(this.secretIndex);
+        this.secretIndex++;
+        if(this.secretIndex >= GAME_CONFIG.SECRET_LIST.length){
+          this.secretIndex = 0;
+          this.activateSecret = false;
+          console.log("Secret sequence completed!");
+        }
+    }
+
+
 
     //const padding = GAME_CONFIG.PADDING;
     const x =   this.virtualKeyboard.getQWERTYXPosition(char, this.canvas.width);
